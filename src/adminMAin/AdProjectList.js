@@ -6,6 +6,7 @@ import SearchIcon from "../engineerLeader/SearchIcon";
 import "../enMain/EnMain.css";
 import "../userMain/User.css";
 import "../enMain/EnCss.css";
+import "./Admin.css"
 import AdProDetailModal from "./AdProDetailModal";
 
 function AdProjectList() {
@@ -28,16 +29,31 @@ function AdProjectList() {
 
     // 데이터를 복사하여 필터링
     const filteredList = first.filter((item) => { //검색시작
-      if (filter === "담당자이름") {
-        return item.cus_managet_name.includes(searchWord);
+      if (filter === "프로젝트명") {
+        return item.por_name.includes(searchWord);
       } else if (filter === "회사명") {
         return item.cus_company_name.includes(searchWord);
+      } else if (filter === "담당자") {
+        return item.pro_rep.includes(searchWord);
+      } else if (filter === "계약시작일") {
+        return item.pro_startdate.includes(searchWord);
+      } else if (filter === "계약종료일") {
+        return item.pro_enddate.includes(searchWord);
+      } else if (filter === "정기점검일") {
+        return item.pro_pi.includes(searchWord);
+      } else if (filter === "계약상태") {
+        return item.pro_status.includes(searchWord);
       } else if (filter === "전체" && searchWord === "") {
         return item;
       } else if (filter === "전체") {
         return (
+          item.pro_name.includes(searchWord) ||
           item.cus_company_name.includes(searchWord) ||
-          item.cus_managet_name.includes(searchWord)
+          item.pro_rep.includes(searchWord) ||
+          item.cus_phone_number.includes(searchWord) ||
+          item.pro_startdate.includes(searchWord) ||
+          item.pro_enddate.includes(searchWord) ||
+          item.pro_pi.includes(searchWord) 
         );
       }
       return true;
@@ -81,12 +97,24 @@ function AdProjectList() {
             <div className="col-12">
               <div className="card1">
                 <div className="card-body1">
-                <label style={{ display: 'flex', justifyContent: 'right', marginBottom: '50px' }}>
-                    <input type="search" className="form-control form-control-sm" placeholder="검색하기" aria-controls="zero_config" style={{ width: '150px', marginRight: '10px' }} />
+                   
+                <label style={{ display: 'flex', justifyContent: 'right', marginBottom: '50px' }}> 
+                  <div className="customize-input right select-proengl" style={{marginRight: '30px'}}>
+                    <select style={{ display: 'inline-block', border: '1px solid rgb(255 186 186)'}} className="selectee">
+                      <option className="selecteeop">전체</option>
+                      <option className="selecteeop">회사명</option>
+                      <option className="selecteeop">계약시작일</option>
+                      <option className="selecteeop">계약종료일</option>
+                      <option className="selecteeop">정기점검일</option>
+                      <option className="selecteeop">계약상태</option>
+                    </select>
+                  </div>
+                    <input type="search" className="form-control form-control-sm" placeholder="검색하기" aria-controls="zero_config" style={{ width: '150px', marginRight: '10px', border: '1px solid rgb(255 186 186)' }} />
                     <div className="search-click-engl" onClick={handleSearch}> 
-                      <SearchIcon color="#9cbba6" />
+                      <SearchIcon color="rgb(255 186 186)" />
                     </div>
                   </label> 
+
                   <div className="table-responsive">
                     <div className="project-table">
                       <table className="table">
@@ -96,63 +124,39 @@ function AdProjectList() {
                             <th scope="col">프로젝트명</th>
                             <th scope="col">회사명</th>
                             <th scope="col">담당자</th>
-                            <th scope="col">연락처</th>
                             <th scope="col">계약시작일</th>
+                            <th scope="col">계약종료일</th>
+                            <th scope="col">정기점검일</th>
                             <th scope="col">계약상태</th>
                           </tr>
                         </thead>
                         <tbody>
-                        {proList.map((project,index) => (
+                        {currentItems.map((project,index) => (
 
                           <tr key={project.pro_id}>
-                            <th scope="row">{index+1}</th>
+                            <th scope="row">{(currentPage - 1) * itemsPerPage + index + 1}</th>
                             <td class="user-proname">
                               <AdProDetailModal 
-                               pro_id = {project.pro_id}/>
+                               pro_id={project.pro_id}
+                               pro_name={project.pro_name}
+                               />
                             </td>
                             <td>{project.cus_company_name}</td>
                             <td>{project.pro_rep}</td>
-                            <td>{project.cus_phone_number}</td>
                             <td>{project.pro_startdate}</td>
+                            <td>{project.pro_enddate}</td>
+                            <td>{project.pro_pi}</td>
                             <td>{project.pro_status}</td>
                           </tr>
 
                           ) 
                          )}
-
                         </tbody>
                       </table>
                     </div>
                   </div>
-                  <div style={{ textAlign: 'center' }}>
-                    {/* <ul className="pagination">
-                      <li className="page-item disabled">
-                        <Link className="page-link" href="#" tabindex="-1">
-                          Prev
-                        </Link>
-                      </li>
-                      <li className="page-item active">
-                        <Link className="page-link" href="#">
-                          1
-                        </Link>
-                      </li>
-                      <li className="page-item">
-                        <Link className="page-link" href="#">
-                          2 <span className="sr-only">(current)</span>
-                        </Link>
-                      </li>
-                      <li className="page-item">
-                        <Link className="page-link" href="#">
-                          3
-                        </Link>
-                      </li>
-                      <li className="page-item">
-                        <Link className="page-link" href="#">
-                          Next
-                        </Link>
-                      </li>
-                    </ul> */}
-                     <div className="pagedivengl pagination-engl">
+                  <div style={{ textAlign: 'center'}}>
+                     <div className="pagedivengl pagination-admin">
                       <Pagination
                           activePage={currentPage}
                           itemsCountPerPage={itemsPerPage}

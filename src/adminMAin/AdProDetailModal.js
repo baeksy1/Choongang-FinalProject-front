@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
+import AdProDetailInsModal from "./AdProDetailInsModal";
 
 
 
@@ -28,7 +29,7 @@ function AdProDetailModal(props) {
 
   useEffect(() => {
     if(modalIsOpen){
-      axios.get('/api/main/admin/AdProDetailModal')
+      axios.get(`/api/main/admin/AdProDetailModal/${props.pro_id}`)
       .then(response => {
         setAdProInfoList(response.data);
         console.log(response.data);
@@ -48,6 +49,7 @@ function AdProDetailModal(props) {
     setModalIsOpen(false);
   }
 
+  console.log(props);
 
   return(
    <> 
@@ -60,7 +62,7 @@ function AdProDetailModal(props) {
       <div className="page-breadcrumb">
         <div className="row">
           <div className="col-7 align-self-center">
-            <h3>
+            <h3 style={{color: '#dd7070'}}>
               프로젝트 정보
             </h3>
           </div>
@@ -73,13 +75,12 @@ function AdProDetailModal(props) {
 
         <div className="card">
         
-        <div className="card-body pro-body">
+        <div className="card-body pro-body" style={{border: '1px solid #ffc4c4'}}>
 
         <div className="table-responsive">
               <table className="table">
                 <thead>
                   <tr>
-                    <th scope="col">No</th>
                     <th scope="col">프로젝트명</th>
                     <th scope="col">시작일</th>
                     <th scope="col">만료일</th>
@@ -93,7 +94,6 @@ function AdProDetailModal(props) {
                 <tbody style={{marginTop: "50px"}}>
 
                     <tr>
-                    <th scope="row">{props.index+1}</th>
                     <td>{adProInfoList?.[0]?.pro_name}</td>
                     <td>{adProInfoList?.[0]?.pro_startdate}</td>
                     <td>{adProInfoList?.[0]?.pro_enddate}</td>
@@ -116,7 +116,7 @@ function AdProDetailModal(props) {
     <div className="page-breadcrumb">
         <div className="row">
           <div className="col-7 align-self-center">
-            <h3>
+            <h3 style={{color: '#dd7070'}}>
               서버 정보
             </h3>
           </div>
@@ -129,7 +129,7 @@ function AdProDetailModal(props) {
 
         <div className="card">
         
-        <div className="card-body pro-body">
+        <div className="card-body pro-body" style={{border: '1px solid #ffc4c4'}}>
 
         <div className="table-responsive">
               <table className="table">
@@ -144,6 +144,7 @@ function AdProDetailModal(props) {
                     <th scope="col">디스크 용량</th>
                     <th scope="col">서버 상태</th>
                     <th scope="col">배정 엔지니어</th>
+                    <th scope="col"></th>
                   </tr>
 
                 </thead>
@@ -161,6 +162,12 @@ function AdProDetailModal(props) {
                     <td>{server.disk_capacitygb}</td>
                     <td>{server.server_status}</td>
                     <td>{server.eng_name}</td>
+                    <td>
+                      <AdProDetailInsModal
+                        server_id={server.server_id}
+                      />
+                      {/* <button style={{backgroundColor: 'rgb(255 118 118)', fontSize: '10px', padding: '5px', color: '#fff'}}>작업내역</button> */}
+                    </td>
                     </tr>
 
                     ) 
@@ -181,6 +188,7 @@ function AdProDetailModal(props) {
           type="button"
           value="목록"
           className="detail_modal_button_close"
+          style={{backgroundColor: 'rgb(214 87 87)'}}
           onClick={() => setModalIsOpen(false)}
         />
       </div>

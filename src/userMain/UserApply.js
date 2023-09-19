@@ -11,7 +11,7 @@ function UserApply({state}) {
 
   const [loading, setLoading] = useState(true);
 
-
+  console.log(state);
 
 
   const navigate = useNavigate();
